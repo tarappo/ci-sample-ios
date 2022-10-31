@@ -9,6 +9,19 @@ platform :ios do
     scan
   end
 
+
+  desc "build Simulator File"
+  lane :build_for_simulator do
+    build_app(
+      workspace: "./ci-sample.xcworkspace",
+      scheme: "ci-sample",
+      derived_data_path: "./build",
+      skip_archive: true,
+      destination: "generic/platform=iOS Simulator"
+    )
+  end
+
+
   lane :build_debug_without_match do
     clean_build_artifacts
     increment_build_number(

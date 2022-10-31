@@ -1,0 +1,31 @@
+name: iOS Build
+
+on:
+  pull_request:
+  - *
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache bundle directory
+        uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
+      - name: Setup
+        shell: bash
+        id: setup
+        run: |
+          bundle config set path 'vendor/bundle'
+          bundle install
+          bundle exec pod install
+      - name: Build iOS App
+        shell: bash
+        id: build-app-file
+        run: |
+          bundle exec fastlane build_for_simulator
+          cd build/Build/Products/Debug-iphonesimulator/
+          zip -r ci-sample.zip ci-sample.app/

@@ -45,6 +45,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release_note.outputs.upload_url }}
-          asset_path: ios/build/Build/Products/Debug-iphonesimulator/ci-sample.zip
+          asset_path: build/Build/Products/Debug-iphonesimulator/ci-sample.zip
           asset_name: ci-sample.zip
           asset_content_type: application/zip

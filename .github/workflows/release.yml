@@ -31,7 +31,9 @@ jobs:
           bundle exec fastlane build_for_simulator
           cd build/Build/Products/Debug-iphonesimulator/
           zip -r ci-sample.zip ci-sample.app/
-      - uses: release-drafter/release-drafter@v5
-        upload_url: ios/build/Build/Products/Debug-iphonesimulator/ci-sample.zip
+      - name: Release note
+        uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ios/build/Build/Products/Debug-iphonesimulator/ci-sample.zip

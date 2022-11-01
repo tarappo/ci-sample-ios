@@ -5,24 +5,27 @@ on:
     branches:
       - main
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup ruby
+      - name: Setup Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: '2.6'
-          architecture: 'x64'
+            ruby-version: '2.x'
+      - name: Cache bundle directory
+        uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
       - name: install danger
         run: |
           gem install bundler
           bundle install
-      - name: run ktlintCheck
-        run: ./gradlew ktlintCheck
       - name: run danger
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: danger
+        run: bundle exec danger

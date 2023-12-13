@@ -1,0 +1,22 @@
+name: iOS build and test for develop
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+permissions: write-all
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  debug_sample:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    name: iOS Unit Test
+    steps:
+      - uses: actions/checkout@v3
+      - name: share actions
+        uses: ./.github/actions/sample

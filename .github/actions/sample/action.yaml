@@ -6,3 +6,4 @@ runs:
       shell: bash
       run: |
         echo "sample"
+        echo "SAMPLE=HOGEHOGE" >> $GITHUB_ENV

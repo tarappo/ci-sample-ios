@@ -1,0 +1,15 @@
+name: Build
+inputs:
+  authToken:
+    description: GitHub Token
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: sample echo
+      shell: bash
+      run: |
+        echo "sample"
+        echo ${{ inputs.authToken }}
+        echo "SAMPLE=HOGEHOGE" >> $GITHUB_ENV

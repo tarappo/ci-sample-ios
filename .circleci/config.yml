@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  test:
     macos:
       xcode: 15.2.0 
 
@@ -9,12 +9,23 @@ jobs:
       - checkout
       - run: fastlane test
       - store_test_results:
-          path: test_output
+          path: test_result
       - store_artifacts:
-          path: test_output
+          path: test_result
           destination: scan-output
+  build:
+    macos:
+      xcode: 15.2.0 
+
+    steps:
+      - checkout
+      - run: fastlane build_for_simulator
+      - store_artifacts:
+          path: build_result
+          destination: build-output
 
 workflows:
-  build:
+  build_and_test:
     jobs:
       - build
+      - test

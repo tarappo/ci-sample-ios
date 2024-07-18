@@ -114,11 +114,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 73FF83BD222B1FDF00A3D3ED /* Build configuration list for PBXNativeTarget "ci-sampleTests" */;
 			buildPhases = (
-				7E3CECF8D9A852927DFCB043 /* [CP] Check Pods Manifest.lock */,
 				73FF83B2222B1FDF00A3D3ED /* Sources */,
 				73FF83B3222B1FDF00A3D3ED /* Frameworks */,
 				73FF83B4222B1FDF00A3D3ED /* Resources */,
-				6A0C2FDB185464D57700AE16 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -208,48 +206,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		6A0C2FDB185464D57700AE16 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ci-sampleTests/Pods-ci-sampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ci-sampleTests/Pods-ci-sampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ci-sampleTests/Pods-ci-sampleTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7E3CECF8D9A852927DFCB043 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ci-sampleTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		73FF83B2222B1FDF00A3D3ED /* Sources */ = {

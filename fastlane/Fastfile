@@ -6,7 +6,9 @@ platform :ios do
   build_number = ENV["BUILD_NUMBER"] ||= "0"
 
   lane :test do
-    scan
+    scan(
+      output_directory: "./test_result"
+    )
   end
 
   desc "build Simulator File"
@@ -52,14 +54,6 @@ platform :ios do
     build(type: "Release")
   end
 
-
-  lane :testflight do
-      upload_to_testflight(
-      username: "felix@krausefx.com",
-      app_identifier: "com.krausefx.app",
-      itc_provider: "abcde12345" # pass a specific value to the iTMSTransporter -itc_provider option
-    )
-  end
 
   private_lane :build do |options|
     configuration = options[:type]

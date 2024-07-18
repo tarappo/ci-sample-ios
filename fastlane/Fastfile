@@ -9,11 +9,10 @@ platform :ios do
     scan
   end
 
-
   desc "build Simulator File"
   lane :build_for_simulator do
     build_app(
-      workspace: "./ci-sample.xcworkspace",
+      project: "./ci-sample.xcodeproj",
       scheme: "ci-sample",
       derived_data_path: "./build",
       skip_archive: true,
@@ -53,21 +52,12 @@ platform :ios do
     build(type: "Release")
   end
 
-  lane :setup_certificate do
-    create_keychain(
-      name: keychain_name,
-      password: keychain_password,
-      default_keychain: true,
-      unlock: true,
-      timeout: 3600,
-      add_to_search_list: true
-    )
 
-    import_certificate(
-      certificate_path: "travis/dist.p12",
-      certificate_password: ENV["KEY_PASSWORD"],
-      keychain_name: keychain_name,
-      keychain_password: keychain_password
+  lane :testflight do
+      upload_to_testflight(
+      username: "felix@krausefx.com",
+      app_identifier: "com.krausefx.app",
+      itc_provider: "abcde12345" # pass a specific value to the iTMSTransporter -itc_provider option
     )
   end
 
@@ -76,7 +66,7 @@ platform :ios do
     export_method = configuration == "Release" ? "appstore" : "development"
 
     gym(
-      workspace: "ci-sample.xcworkspace",
+      project: "./ci-sample.xcodeproj",
       scheme: "ci-sample",
       configuration: configuration,
       export_method: export_method

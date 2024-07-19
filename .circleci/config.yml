@@ -3,8 +3,7 @@ version: 2.1
 jobs:
   test:
     macos:
-      xcode: 15.2.0 
-
+      xcode: 15.2.0
     steps:
       - checkout
       - run: fastlane test
@@ -16,7 +15,6 @@ jobs:
   build:
     macos:
       xcode: 15.2.0 
-
     steps:
       - checkout
       - run: fastlane build_for_simulator

@@ -22,11 +22,14 @@ jobs:
         run: |
           xcodebuild archive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO -project ./ci-sample.xcodeproj -scheme ci-sample -configuration Debug -archivePath ./ci-sample_debug
       - name: ipa
-        environment:
-          name: CloudSigning
+        env:
+          AUTHKEY_P8_BASE64: ${{ secrets.CERTIFICATE_BASE64 }}
+          ISSUER_ID: ${{ secrets.ISSUER_ID }}
+          KEY_ID: ${{ secrets.KEY_ID }}
         run: |
-          echo ${{ secrets.AUTHKEY_P8_BASE64 }} | base64 -d > $PWD/Authkey.p8
-          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./output -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID ${{ secrets.ISSUER_ID }} -authenticationKeyID ${{ secrets.KEY_ID }} -authenticationKeyPath $PWD/Authkey.p8
+          ls -l
+          echo $AUTHKEY_P8_BASE64 | base64 -d > $PWD/Authkey.p8
+          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./output -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
 
   test:
     runs-on: macos-latest

@@ -28,7 +28,7 @@ jobs:
           KEY_ID: ${{ secrets.KEY_ID }}
         run: |
           echo $AUTHKEY_P8_BASE64 | base64 -d > $PWD/Authkey.p8
-          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./output -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
+          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
 
   test:
     runs-on: macos-latest

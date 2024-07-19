@@ -2,6 +2,8 @@ name: PullRequest
 
 on:
   pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions: write-all
@@ -12,20 +14,13 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
-      - name: Cache bundle directory
-        uses: actions/cache@v4
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-
-      - name: bundler
+      - name: archive
         run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
-      - name: build
+          xcodebuild archive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO -project ./ci-sample.xcodeproj -scheme ci-sample -configuration Debug -archivePath ./ci-sample_debug
+      - name: ipa
         run: |
-          bundle exec fastlane build_for_simulator
+          echo "${AUTHKEY_P8_BASE64}" | base64 -d > $PWD/Authkey.p8
+          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./output -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
 
   test:
     runs-on: macos-latest

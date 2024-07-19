@@ -21,9 +21,15 @@ jobs:
       - name: archive
         run: |
           xcodebuild archive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO -project ./ci-sample.xcodeproj -scheme ci-sample -configuration Debug -archivePath ./ci-sample_debug
+      - name: debug
+        run: |
+          ls -l
+          echo "${{ secrets.AUTHKEY_P8_BASE64 }}"
+          echo "${{ secrets.ISSUER_ID }}"
+          echo "${{ secrets.KEY_ID }}"
       - name: ipa
         env:
-          AUTHKEY_P8_BASE64: ${{ secrets.CERTIFICATE_BASE64 }}
+          AUTHKEY_P8_BASE64: ${{ secrets.AUTHKEY_P8_BASE64 }}
           ISSUER_ID: ${{ secrets.ISSUER_ID }}
           KEY_ID: ${{ secrets.KEY_ID }}
         run: |

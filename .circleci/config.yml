@@ -25,7 +25,7 @@ jobs:
           name: ipa
           command: |
             echo "${AUTHKEY_P8_BASE64}" | base64 -d > $PWD/Authkey.p8
-            xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./output -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID ${ISSUER_ID} -authenticationKeyID ${KEY_ID} -authenticationKeyPath $PWD/Authkey.p8
+            xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID ${ISSUER_ID} -authenticationKeyID ${KEY_ID} -authenticationKeyPath $PWD/Authkey.p8
       - store_artifacts:
           path: build_result
           destination: build-output

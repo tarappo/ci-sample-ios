@@ -5,22 +5,27 @@ iOSアプリのコードだけでなく、CI/CDサービスに関する情報も
 - [ドキュメント](docs/README.md)
 
 # ブランチ管理
-
- * master
+ * main
    * 最新
- * feature/*
-   * 機能開発用
- * release
-   * リリースする用
+ * tag
+   * tagを付与するとリリース
 
-機能開発時にmasterからfeature/xxxをきります。
-開発が終わったらPRをmasterに向けてだします。
-リリースのタイミングでreleaseにmergeします。
+mainは常に問題ないコードが入っている前提です。
+
+## ステップ
+機能開発、不具合対応ともに次のステップをおこないます。
+
+ - mainブランチから新たなブランチをきり、PRをmainに向けて作成
+ - 全てが完了したらmainにマージ
+
+リリースをするときは次のステップをおこないます。
+
+ - 特定タイミングになったらtagをきってリリース
 
 
 ## CI Badge
 Badgeが利用できるCIサービスについては以下に全て貼ります。
 
-[![Build Status](https://app.bitrise.io/app/00135807a432fcfc/status.svg?token=zLXDRYdlQMyKbXskaKfoVA&branch=master)](https://app.bitrise.io/app/00135807a432fcfc)
-[![CircleCI](https://circleci.com/gh/tarappo/ci-sample-ios.svg?style=svg)](https://circleci.com/gh/tarappo/ci-sample-ios)
-[![Build Status](https://travis-ci.org/tarappo/ci-sample-ios.svg?branch=master)](https://travis-ci.org/tarappo/ci-sample-ios)
+[![Build Status](https://app.bitrise.io/app/fb7c4316-1dfb-44d5-ac7a-f89f726f21ae/status.svg?token=rFf_t59-Mnn6ueX4NTlp_Q)](https://app.bitrise.io/app/fb7c4316-1dfb-44d5-ac7a-f89f726f21ae)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/tarappo/ci-sample-ios/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/tarappo/ci-sample-ios/tree/main)
+[![Actions Status](https://github.com/tarappo/ci-sample-ios/actions/workflows/merge.yml/badge.svg)](https://github.com/tarappo/ci-sample-ios/actions)

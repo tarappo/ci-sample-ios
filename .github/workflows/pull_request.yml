@@ -29,29 +29,6 @@ jobs:
         run: |
           echo $AUTHKEY_P8_BASE64 | base64 -d > $PWD/Authkey.p8
           xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
-      - name: Cache bundle directory
-        uses: actions/cache@v4
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-
-      - name: Setup
-        shell: bash
-        id: setup
-        run: |
-          bundle config set path 'vendor/bundle'
-          bundle install
-      - name: test flight
-        env:
-          AUTHKEY_P8_BASE64: ${{ secrets.AUTHKEY_P8_BASE64 }}
-          ISSUER_ID: ${{ secrets.ISSUER_ID }}
-          KEY_ID: ${{ secrets.KEY_ID }}
-          IPA_FILE_PATH: "./build_result/ci-sample.ipa"
-          AUTHKEY_P8_FILE_PATH: "./Authkey.p8"
-        run: |
-          bundle exec fastlane upload_ipa_for_testflight
-
 
   test:
     runs-on: macos-latest

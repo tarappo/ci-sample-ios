@@ -21,14 +21,14 @@ jobs:
       - name: archive
         run: |
           xcodebuild archive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO -project ./ci-sample.xcodeproj -scheme ci-sample -configuration Debug -archivePath ./ci-sample_debug
-      - name: ipa
+      - name: upload testflight
         env:
           AUTHKEY_P8_BASE64: ${{ secrets.AUTHKEY_P8_BASE64 }}
           ISSUER_ID: ${{ secrets.ISSUER_ID }}
           KEY_ID: ${{ secrets.KEY_ID }}
         run: |
           echo $AUTHKEY_P8_BASE64 | base64 -d > $PWD/Authkey.p8
-          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
+          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptionsTestFlight.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
 
   test:
     runs-on: macos-latest

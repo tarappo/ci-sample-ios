@@ -47,9 +47,9 @@ jobs:
           AUTHKEY_P8_BASE64: ${{ secrets.AUTHKEY_P8_BASE64 }}
           ISSUER_ID: ${{ secrets.ISSUER_ID }}
           KEY_ID: ${{ secrets.KEY_ID }}
+          IPA_FILE_PATH: "./build_result/ci-sample.ipa"
+          AUTHKEY_P8_FILE_PATH: "${PWD}/Authkey.p8"
         run: |
-          ENV["IPA_FILE_PATH"]="./build_result/ci-sample.ipa"
-          ENV["AUTHKEY_P8_FILE_PATH"]=$PWD/Authkey.p8
           bundle exec fastlane upload_ipa_for_testflight
 
 

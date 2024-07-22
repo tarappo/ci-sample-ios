@@ -1,0 +1,67 @@
+format_version: "13"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+workflows:
+  build:
+    summary: Run your Xcode tests and create an IPA file to install your app on a device or share it with your team.
+    description: The workflow will first clone your Git repository, cache and install your project's dependencies if any, run your Xcode tests, export an IPA file from the project and save it.
+    steps:
+    - git-clone@8: {}
+    - cache-pull@2: {}
+    - script@1:
+        inputs:
+        - script_file_path: null
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+            xcodebuild archive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO -project ./ci-sample.xcodeproj -scheme ci-sample -configuration Debug -archivePath ./ci-sample_debug
+        title: Archiveの作成
+    - script@1:
+        inputs:
+        - script_file_path: null
+        - content: |
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+            echo "${AUTHKEY_P8_BASE64}" | base64 -d > $PWD/Authkey.p8
+
+            xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./output -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
+        title: Archiveからipaを生成
+    - cache-push@2: {}
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - deploy_path: ./output
+meta:
+  bitrise.io:
+    stack: osx-xcode-15.4.x
+    machine_type_id: g2-m1.4core
+app:
+  envs:
+  - opts:
+      is_expand: false
+    BITRISE_PROJECT_PATH: ci-sample.xcworkspace
+  - opts:
+      is_expand: false
+    BITRISE_SCHEME: ci-sample
+  - opts:
+      is_expand: false
+    BITRISE_DISTRIBUTION_METHOD: ad-hoc
+trigger_map:
+- pull_request_target_branch:
+    regex: main
+  type: pull_request
+  workflow: build
+- push_branch: main
+  type: push
+  workflow: build

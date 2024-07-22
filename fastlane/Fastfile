@@ -1,13 +1,33 @@
+skip_docs
+
 default_platform :ios
 
 platform :ios do
-  keychain_name = "ios-build.keychain"
-  keychain_password = SecureRandom.base64
-  build_number = ENV["BUILD_NUMBER"] ||= "0"
-
+  desc "run test"
   lane :test do
     run_tests(
       output_directory: "./test_result"
+    )
+  end
+
+
+  lane :upload_ipa_for_testflight do
+    key_id = ENV["KEY_ID"]
+    issuer_id = ENV["ISSUER_ID"]
+    ipa_file_path = ENV["IPA_FILE_PATH"]
+    auth_key_p8_path = ENV["AUTHKEY_P8_FILE_PATH"]
+
+    app_store_connect_api_key(
+      key_id: key_id,
+      issuer_id: issuer_id,
+      key_filepath: auth_key_p8_path,
+      duration: 1200,
+      in_house: false
+    )
+
+    upload_to_testflight(
+      ipa: ipa_file_path,
+      skip_submission: true,
     )
   end
 
@@ -24,47 +44,4 @@ platform :ios do
   end
 
 
-  lane :build_debug_without_match do
-    clean_build_artifacts
-    increment_build_number(
-      build_number: "0." + ENV["BUILD_NUMBER"]
-    )
-
-    build(type: "Debug")
-  end
-
-  lane :build_debug do
-    match(type: "development", readonly: is_ci)
-
-    clean_build_artifacts
-    increment_build_number(
-      build_number: "0." + ENV["BUILD_NUMBER"]
-    )
-
-    build(type: "Debug")
-  end
-
-  lane :build_release do
-    match(type: "appstore", readonly: is_ci)
-
-    clean_build_artifacts
-    increment_build_number(
-      build_number: "1." + ENV["BUILD_NUMBER"]
-    )
-
-    build(type: "Release")
-  end
-
-
-  private_lane :build do |options|
-    configuration = options[:type]
-    export_method = configuration == "Release" ? "appstore" : "development"
-
-    gym(
-      project: "./ci-sample.xcodeproj",
-      scheme: "ci-sample",
-      configuration: configuration,
-      export_method: export_method
-    )
-  end
 end

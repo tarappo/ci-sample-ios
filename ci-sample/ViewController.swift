@@ -9,9 +9,11 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    @IBOutlet weak var buildNumberLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.buildNumberLabel.text = Bundle.main.infoDictionary!["CFBundleVersion"] as? String
     }
 
     override func didReceiveMemoryWarning() {

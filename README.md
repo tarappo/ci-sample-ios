@@ -31,6 +31,9 @@ mainは常に問題ないコードが入っている前提です。
 |CircleCI|PR|アプリのビルドと保存|
 |Bitrise|PR|アプリのビルドと保存|
 |GitHub Actions|Tag|リリースノート作成|
+|GitHub Actions|月1回定期実行|TestFlightへアップロード|
+|CircleCI|月1回定期実行|アプリのビルドと保存|
+
 
 
 ## CI Badge

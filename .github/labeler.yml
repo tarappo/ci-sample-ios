@@ -5,27 +5,27 @@ Documentation:
     - README.md
 
 "GitHub Actions Workflow":
-- all:
+- changed-files:
   - any-glob-to-any-file:
     - .github/workflows/*
 
 "Bitrise Workflow":
-- all:
+- changed-files:
   - any-glob-to-any-file:
     - bitrise.yml
 
 "CircleCI Workflow":
-- all:
+- changed-files:
   - any-glob-to-any-file:
     - .circleci/config.yml
 
 iOS:
-- all:
+- changed-files:
   - any-glob-to-any-file:
     - ci-sample/*
     - ci-sample.xcodeproj/*
 
 Fastlane:
-- all:
+- changed-files:
   - any-glob-to-any-file:
     - fastlane/*

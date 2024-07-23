@@ -4,17 +4,17 @@ Documentation:
     - docs/*
     - README.md
 
-GitHub Actions Workflow:
+"GitHub Actions Workflow":
 - all:
   - any-glob-to-any-file:
     - .github/workflows/*
 
-Bitrise Workflow:
+"Bitrise Workflow":
 - all:
   - any-glob-to-any-file:
     - bitrise.yml
 
-CircleCI Workflow:
+"CircleCI Workflow":
 - all:
   - any-glob-to-any-file:
     - .circleci/config.yml

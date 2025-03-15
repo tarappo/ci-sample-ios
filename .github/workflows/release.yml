@@ -20,8 +20,8 @@ jobs:
           ISSUER_ID: ${{ secrets.ISSUER_ID }}
           KEY_ID: ${{ secrets.KEY_ID }}
         run: |
-          echo $AUTHKEY_P8_BASE64 | base64 -d > $PWD/Authkey.p8
-          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
+          echo "${AUTHKEY_P8_BASE64}" | base64 -d > "${PWD}/Authkey.p8"
+          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID "${ISSUER_ID}" -authenticationKeyID "${KEY_ID}" -authenticationKeyPath "${PWD}/Authkey.p8"
           zip -r ci-sample.zip ./build_result/ci-sample.ipa
       - name: Create Release
         id: create_release

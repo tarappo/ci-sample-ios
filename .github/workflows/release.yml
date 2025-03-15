@@ -10,7 +10,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: archive
         run: |
           xcodebuild archive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO -project ./ci-sample.xcodeproj -scheme ci-sample -configuration Debug -archivePath ./ci-sample_debug
@@ -20,8 +20,8 @@ jobs:
           ISSUER_ID: ${{ secrets.ISSUER_ID }}
           KEY_ID: ${{ secrets.KEY_ID }}
         run: |
-          echo $AUTHKEY_P8_BASE64 | base64 -d > $PWD/Authkey.p8
-          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID $ISSUER_ID -authenticationKeyID $KEY_ID -authenticationKeyPath $PWD/Authkey.p8
+          echo "${AUTHKEY_P8_BASE64}" | base64 -d > "${PWD}/Authkey.p8"
+          xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptions.plist -allowProvisioningUpdates -authenticationKeyIssuerID "${ISSUER_ID}" -authenticationKeyID "${KEY_ID}" -authenticationKeyPath "${PWD}/Authkey.p8"
           zip -r ci-sample.zip ./build_result/ci-sample.ipa
       - name: Create Release
         id: create_release

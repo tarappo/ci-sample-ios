@@ -23,7 +23,7 @@ jobs:
       - name: archive
         run: |
           xcodebuild archive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO -project ./ci-sample.xcodeproj -scheme ci-sample -configuration Release -archivePath ./ci-sample_release
-      - name: upload testflight
+      - name: build
         env:
           AUTHKEY_P8_BASE64: ${{ secrets.AUTHKEY_P8_BASE64 }}
           ISSUER_ID: ${{ secrets.ISSUER_ID }}
@@ -31,7 +31,6 @@ jobs:
         run: |
           echo "${AUTHKEY_P8_BASE64}" | base64 -d > "${PWD}/Authkey.p8"
           xcodebuild -exportArchive -archivePath ci-sample_release.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptionsAppStoreConnect.plist -allowProvisioningUpdates -authenticationKeyIssuerID "${ISSUER_ID}" -authenticationKeyID "${KEY_ID}" -authenticationKeyPath "${PWD}/Authkey.p8"
-          ls -l ./build_result
       - name: upload app store connect
         env:
           ISSUER_ID: ${{ secrets.ISSUER_ID }}
@@ -41,7 +40,6 @@ jobs:
           mkdir ./private_keys
           echo -n "${AUTHKEY_P8_BASE64}" | base64 -d --output ./private_keys/AuthKey_${KEY_ID}.p8
 
-          ls -l ./build_result
           xcrun altool --validate-app -f ./build_result/ci-sample.ipa -t ios --apiKey "${KEY_ID}" --apiIssuer "${ISSUER_ID}"
           xcrun altool --upload-app -f ./build_result/ci-sample.ipa -t ios --apiKey "${KEY_ID}" --apiIssuer "${ISSUER_ID}"
       - name: archive

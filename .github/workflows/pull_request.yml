@@ -30,7 +30,8 @@ jobs:
           KEY_ID: ${{ secrets.KEY_ID }}
         run: |
           echo "${AUTHKEY_P8_BASE64}" | base64 -d > "${PWD}/Authkey.p8"
-          xcodebuild -exportArchive -archivePath ci-sample_release.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptionsTestFlight.plist -allowProvisioningUpdates -authenticationKeyIssuerID "${ISSUER_ID}" -authenticationKeyID "${KEY_ID}" -authenticationKeyPath "${PWD}/Authkey.p8"
+          xcodebuild -exportArchive -archivePath ci-sample_release.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptionsAppStoreConnect.plist -allowProvisioningUpdates -authenticationKeyIssuerID "${ISSUER_ID}" -authenticationKeyID "${KEY_ID}" -authenticationKeyPath "${PWD}/Authkey.p8"
+          ls -l ./build_result
       - name: upload app store connect
         env:
           ISSUER_ID: ${{ secrets.ISSUER_ID }}

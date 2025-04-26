@@ -33,6 +33,9 @@ jobs:
           xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptionsDevelopment.plist -allowProvisioningUpdates -authenticationKeyIssuerID "${ISSUER_ID}" -authenticationKeyID "${KEY_ID}" -authenticationKeyPath "${PWD}/Authkey.p8"
       - name: upload app store connect
         run: |
+          mkdir ./private_keys
+          echo -n "${AUTHKEY_P8_BASE64}" | base64 -d --output ./private_keys/AuthKey_${KEY_ID}.p8
+
           xcrun altool --validate-app -f ./build_result/ci-sample.ipa -t ios --apiKey "${KEY_ID}" --apiIssuer "${ISSUER_ID}"
           xcrun altool --upload-app -f ./build_result/ci-sample.ipa -t ios --apiKey "${KEY_ID}" --apiIssuer "${ISSUER_ID}"
         env:

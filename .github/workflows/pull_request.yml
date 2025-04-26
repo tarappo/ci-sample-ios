@@ -31,6 +31,13 @@ jobs:
         run: |
           echo "${AUTHKEY_P8_BASE64}" | base64 -d > "${PWD}/Authkey.p8"
           xcodebuild -exportArchive -archivePath ci-sample_debug.xcarchive -exportPath ./build_result -exportOptionsPlist ./ExportOptionsDevelopment.plist -allowProvisioningUpdates -authenticationKeyIssuerID "${ISSUER_ID}" -authenticationKeyID "${KEY_ID}" -authenticationKeyPath "${PWD}/Authkey.p8"
+      - name: upload app store connect
+        run: |
+          xcrun altool --validate-app -f ./build_result/ci-sample.ipa -t ios --apiKey "${KEY_ID}" --apiIssuer "${ISSUER_ID}"
+          xcrun altool --upload-app -f ./build_result/ci-sample.ipa -t ios --apiKey "${KEY_ID}" --apiIssuer "${ISSUER_ID}"
+        env:
+          ISSUER_ID: ${{ secrets.ISSUER_ID }}
+          KEY_ID: ${{ secrets.KEY_ID }}
       - name: archive
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:

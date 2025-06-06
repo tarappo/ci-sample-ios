@@ -31,5 +31,4 @@ Fastlane:
     - fastlane/*
 
 WIP:
-- title: ["*WIP*"]
-
+  - title: ["*WIP*"]

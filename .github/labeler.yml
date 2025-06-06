@@ -29,3 +29,7 @@ Fastlane:
 - changed-files:
   - any-glob-to-any-file:
     - fastlane/*
+
+WIP:
+- title: ["*WIP*"]
+
